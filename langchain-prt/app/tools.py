@@ -6,7 +6,7 @@ from typing import List
 @tool
 def db_insert_tool(
     company_name: str, 
-    founding_date: date, 
+    founding_date: str, 
     founders: List[str]
 ) -> str:
     """Inserts structured company data..."""

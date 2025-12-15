@@ -137,28 +137,31 @@ paragraphs = [p.strip() for p in essay.strip().split('\n\n') if p.strip()]
 
 for i, paragraph in enumerate(paragraphs):
     try:
-        company_data = extract_company(paragraph)
-        print(f"company {company_data.company_name} (Founded: {company_data.founding_date})")
+        companies_data = extract_company(paragraph)
     except Exception as e:
         print(f" Error: {e}")
         continue 
-
-    data_dict = company_data.model_dump()
     
-    agent_instruction = (
-        f"**URGENT INSTRUCTION:** You have been provided with the following validated, structured company data. "
-        f"**YOU MUST USE THE 'db_insert_tool' TOOL** to save this data and complete the task. "
-        f"The details for insertion are: "
-        f"company_name: {data_dict['company_name']}, "
-        f"founding_date: {data_dict['founding_date']}, "
-        f"founders: {', '.join(data_dict['founders'])}"
-    )
-    try:
-        result = agent_executor.invoke({"messages": agent_instruction})
-        print("\n Agent execution completed.")
-        final_output = result.get('output', 'completed.')
-        print(f"\n res:{final_output}")
-    except Exception as e:
-        print("error during agent execution:")
-        print(f"\n err: {e}")
+    # Iterate through all companies found in the paragraph
+    for company_data in companies_data.companies:
+        print(f"company {company_data.company_name} (Founded: {company_data.founding_date})")
+        
+        data_dict = company_data.model_dump()
+        
+        agent_instruction = (
+            f"**URGENT INSTRUCTION:** You have been provided with the following validated, structured company data. "
+            f"**YOU MUST USE THE 'db_insert_tool' TOOL** to save this data and complete the task. "
+            f"The details for insertion are: "
+            f"company_name: {data_dict['company_name']}, "
+            f"founding_date: {data_dict['founding_date']}, "
+            f"founders: {', '.join(data_dict['founders'])}"
+        )
+        try:
+            result = agent_executor.invoke({"messages": agent_instruction})
+            print("\n Agent execution completed.")
+            final_output = result.get('output', 'completed.')
+            print(f"\n res:{final_output}")
+        except Exception as e:
+            print("error during agent execution:")
+            print(f"\n err: {e}")
         

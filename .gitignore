@@ -18,3 +18,16 @@ temp_output.txt
 .aws/credentials
 .aws/config
 .boto/
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+rag_index/

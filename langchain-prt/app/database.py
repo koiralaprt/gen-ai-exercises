@@ -1,7 +1,6 @@
 import psycopg2
 import os
 from typing import List
-from datetime import date
 from dotenv import load_dotenv 
 load_dotenv()
 
@@ -17,7 +16,7 @@ if not all(DB_CONFIG.values()):
     missing = [k for k, v in DB_CONFIG.items() if not v]
     raise ValueError(f"Missing required PostgreSQL environment variables: {', '.join(missing)}")
 
-def insert_company(company_name: str, founding_date: date, founders: List[str]):
+def insert_company(company_name: str, founding_date: str, founders: List[str]):
     """
     Inserts company data into PostgreSQL using psycopg2.
     """
