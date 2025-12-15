@@ -31,3 +31,5 @@ wheels/
 .venv
 
 rag_index/
+rag_db/
+source/
